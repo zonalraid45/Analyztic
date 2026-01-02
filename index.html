@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>Chess Analysis</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/1.0.0/chess.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.13.4/chess.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 <style>
 body {
@@ -54,7 +54,7 @@ header p {
 }
 
 .panel {
-  background: linear-gradient(180deg, #020617, #020617);
+  background: #020617;
   border-radius: 14px;
   padding: 14px;
 }
@@ -141,28 +141,32 @@ button:hover {
 </div>
 
 <script>
-const chess = new Chess();
+var chess = new Chess();
 
 function importGame() {
-  const pgn = document.getElementById("pgnInput").value;
-  const movesDiv = document.getElementById("moves");
+  var pgn = document.getElementById("pgnInput").value;
+  var movesDiv = document.getElementById("moves");
   movesDiv.innerHTML = "";
   chess.reset();
 
-  if (!chess.loadPgn(pgn)) {
+  var loaded = chess.load_pgn(pgn);
+
+  if (!loaded) {
     movesDiv.innerHTML = "Invalid PGN";
     return;
   }
 
-  const history = chess.history();
-  let output = "";
-  for (let i = 0; i < history.length; i += 2) {
-    const moveNumber = Math.floor(i / 2) + 1;
-    const white = history[i] || "";
-    const black = history[i + 1] || "";
-    output += moveNumber + ". " + white + " " + black + "<br>";
+  var history = chess.history();
+  var html = "";
+
+  for (var i = 0; i < history.length; i += 2) {
+    var n = Math.floor(i / 2) + 1;
+    var w = history[i] || "";
+    var b = history[i + 1] || "";
+    html += n + ". " + w + " " + b + "<br>";
   }
-  movesDiv.innerHTML = output;
+
+  movesDiv.innerHTML = html;
 }
 </script>
 
