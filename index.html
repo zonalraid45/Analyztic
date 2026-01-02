@@ -1,13 +1,27 @@
 <!DOCTYPE html>
 <html>
+<head>
+<meta charset="UTF-8">
+<title>Chess Test</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.13.4/chess.min.js"></script>
+</head>
+
 <body>
 
-<button onclick="test()">Import Game</button>
-<div id="moves"></div>
+<textarea id="pgn" rows="6" cols="50">
+1. e4 e5 2. Nf3 Nc6 3. Bb5 a6
+</textarea><br><br>
+
+<button onclick="go()">Import</button>
+
+<pre id="moves"></pre>
 
 <script>
-function test() {
-  document.getElementById("moves").innerText = "BUTTON CLICK WORKS";
+function go() {
+  var chess = new Chess();
+  var ok = chess.load_pgn(document.getElementById("pgn").value);
+  document.getElementById("moves").innerText =
+    ok ? chess.history().join(", ") : "FAILED";
 }
 </script>
 
