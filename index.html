@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Chess Analysis</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+* {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: #0f172a;
+  color: #e5e7eb;
+}
+
+.app {
+  max-width: 1200px;
+  margin: auto;
+  padding: 16px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 28px;
+}
+
+header p {
+  color: #94a3b8;
+}
+
+.main {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 16px;
+}
+
+.board-area {
+  background: #020617;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 480px;
+}
+
+.board-placeholder {
+  width: 360px;
+  height: 360px;
+  background: linear-gradient(45deg, #1e293b, #020617);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  border-radius: 8px;
+  font-size: 18px;
+}
+
+.side-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.panel {
+  background: #020617;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.panel h2 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  color: #38bdf8;
+}
+
+textarea {
+  width: 100%;
+  height: 110px;
+  background: #020617;
+  border: 1px solid #1e293b;
+  color: #e5e7eb;
+  padding: 8px;
+  border-radius: 6px;
+  resize: vertical;
+}
+
+button {
+  width: 100%;
+  margin-top: 8px;
+  padding: 8px;
+  background: #2563eb;
+  border: none;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+button:hover {
+  background: #1d4ed8;
+}
+
+.moves, .analysis {
+  max-height: 160px;
+  overflow-y: auto;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.hint {
+  color: #64748b;
+}
+
+.move {
+  padding: 4px 0;
+}
+
+.bad { color: #f87171; }
+.warn { color: #facc15; }
+.good { color: #4ade80; }
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header>
+  <h1>Chess Analysis</h1>
+  <p>Paste PGN to analyze your game</p>
+</header>
+
+<div class="main">
+
+<div class="board-area">
+  <div class="board-placeholder">
+    Chessboard will appear here
+  </div>
+</div>
+
+<div class="side-panel">
+
+<div class="panel">
+  <h2>PGN Import</h2>
+  <textarea id="pgnInput" placeholder="Paste PGN here..."></textarea>
+  <button onclick="importPGN()">Import Game</button>
+</div>
+
+<div class="panel">
+  <h2>Moves</h2>
+  <div class="moves" id="moves">
+    <p class="hint">Moves will appear here</p>
+  </div>
+</div>
+
+<div class="panel">
+  <h2>Analysis</h2>
+  <div class="analysis" id="analysis">
+    <p class="hint">Engine + AI explanations will appear here</p>
+  </div>
+</div>
+
+</div>
+</div>
+</div>
+
+<script>
+function importPGN() {
+  const pgn = document.getElementById("pgnInput").value.trim();
+  const movesDiv = document.getElementById("moves");
+  const analysisDiv = document.getElementById("analysis");
+
+  if (!pgn) {
+    alert("Please paste a PGN first");
+    return;
+  }
+
+  movesDiv.innerHTML = "";
+  analysisDiv.innerHTML = "";
+
+  const sampleMoves = [
+    { text: "1. e4", cls: "good" },
+    { text: "… e5", cls: "good" },
+    { text: "2. Qh5", cls: "bad" }
+  ];
+
+  sampleMoves.forEach(m => {
+    const div = document.createElement("div");
+    div.className = "move " + m.cls;
+    div.textContent = m.text;
+    movesDiv.appendChild(div);
+  });
+
+  analysisDiv.innerHTML = `
+    <p><strong>Qh5??</strong> Blunder</p>
+    <p>This move brings the queen out too early and allows Black to gain tempo.</p>
+  `;
+}
+</script>
+
+</body>
+</html>
