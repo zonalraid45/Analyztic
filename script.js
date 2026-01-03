@@ -5,13 +5,12 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function importGame() {
-  const pgnInput = document.getElementById("pgnInput");
+  const pgn = document.getElementById("pgnInput").value.trim();
   const movesDiv = document.getElementById("moves");
 
   chess.reset();
   movesDiv.innerHTML = "";
 
-  const pgn = pgnInput.value.trim();
   if (!pgn) {
     movesDiv.textContent = "Paste PGN";
     return;
@@ -20,8 +19,8 @@ function importGame() {
   chess.load_pgn(pgn, { sloppy: true });
 
   const history = chess.history();
-  if (history.length === 0) {
-    movesDiv.textContent = "PGN parsed but no legal moves";
+  if (!history.length) {
+    movesDiv.textContent = "No moves parsed";
     return;
   }
 
