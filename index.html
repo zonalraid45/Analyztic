@@ -21,16 +21,6 @@ header {
   padding: 24px;
 }
 
-header h1 {
-  margin: 0;
-  font-size: 28px;
-}
-
-header p {
-  margin-top: 6px;
-  color: #9ca3af;
-}
-
 .container {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -46,30 +36,18 @@ header p {
   align-items: center;
   justify-content: center;
   color: #64748b;
-  font-size: 18px;
-}
-
-.side-panel {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
 }
 
 .panel {
   background: #020617;
   border-radius: 14px;
   padding: 14px;
-}
-
-.panel h3 {
-  margin: 0 0 10px 0;
-  font-size: 15px;
-  color: #38bdf8;
+  margin-bottom: 16px;
 }
 
 textarea {
   width: 100%;
-  height: 120px;
+  height: 140px;
   background: #020617;
   border: 1px solid #1e293b;
   border-radius: 10px;
@@ -77,32 +55,23 @@ textarea {
   padding: 10px;
   resize: none;
   font-family: monospace;
-  font-size: 13px;
 }
 
 button {
-  margin-top: 10px;
   width: 100%;
+  margin-top: 10px;
   padding: 10px;
   background: #2563eb;
   border: none;
   border-radius: 10px;
   color: white;
-  font-size: 14px;
   cursor: pointer;
 }
 
-button:hover {
-  background: #1d4ed8;
-}
-
 .moves {
-  max-height: 180px;
+  max-height: 220px;
   overflow-y: auto;
   font-family: monospace;
-  font-size: 13px;
-  line-height: 1.6;
-  padding: 6px;
 }
 
 .moves table {
@@ -111,17 +80,12 @@ button:hover {
 }
 
 .moves td {
-  padding: 4px 6px;
-  white-space: nowrap;
+  padding: 4px;
 }
 
 .moves td.num {
-  width: 40px;
+  width: 36px;
   color: #9ca3af;
-}
-
-.moves td.white {
-  text-align: left;
 }
 
 .moves td.black {
@@ -141,16 +105,16 @@ button:hover {
 <div class="container">
   <div class="board-box">Chessboard will appear here</div>
 
-  <div class="side-panel">
+  <div>
     <div class="panel">
       <h3>PGN Import</h3>
-      <textarea id="pgnInput" placeholder="Paste PGN here"></textarea>
+      <textarea id="pgnInput"></textarea>
       <button onclick="importGame()">Import Game</button>
     </div>
 
     <div class="panel">
       <h3>Moves</h3>
-      <div class="moves" id="moves"></div>
+      <div id="moves" class="moves"></div>
     </div>
   </div>
 </div>
@@ -158,52 +122,56 @@ button:hover {
 <script>
 const chess = new Chess();
 
-function extractMovesFromPGN(pgn) {
-  let body = pgn
-    .replace(/\[.*?\]\s*/gs, '')
-    .replace(/\{[^}]*\}/gs, '')
+function sanitizePGN(pgn) {
+  return pgn
+    .replace(/\u00A0/g, ' ')
+    .replace(/\r/g, '')
+    .trim();
+}
+
+function forceSANReplay(pgn) {
+  const tokens = pgn
+    .replace(/\[.*?\]/gs, '')
+    .replace(/\{.*?\}/gs, '')
     .replace(/\([^)]*\)/gs, '')
     .replace(/\d+\.(\.\.)?/g, '')
-    .replace(/\b1-0\b|\b0-1\b|\b1\/2-1\/2\b|\b\*\b/g, '')
-    .replace(/\s+/g, ' ')
-    .trim();
+    .replace(/\b1-0\b|\b0-1\b|\b1\/2-1\/2\b|\*/g, '')
+    .split(/\s+/)
+    .map(t => t.replace(/[\?!+#]+$/, ''))
+    .filter(Boolean);
 
-  if (!body) return null;
-
-  return body.split(' ').map(m =>
-    m.replace(/\$\d+/g, '').replace(/[\?!+#]+$/, '')
-  );
+  tokens.forEach(m => {
+    try { chess.move(m, { sloppy: true }); } catch {}
+  });
 }
 
 function importGame() {
-  const pgn = document.getElementById("pgnInput").value.trim();
+  const raw = document.getElementById("pgnInput").value;
   const movesDiv = document.getElementById("moves");
 
   movesDiv.innerHTML = "";
   chess.reset();
 
-  if (!pgn) {
-    movesDiv.textContent = "Paste a PGN and click Import";
+  if (!raw.trim()) {
+    movesDiv.textContent = "Paste PGN first";
     return;
   }
 
-  let loaded = chess.load_pgn(pgn, { sloppy: true });
+  const pgn = sanitizePGN(raw);
 
-  if (!loaded) {
-    const tokens = extractMovesFromPGN(pgn);
-    if (!tokens) {
-      movesDiv.textContent = "Invalid PGN";
-      return;
-    }
+  let ok = false;
+  try {
+    ok = chess.load_pgn(pgn, { sloppy: true });
+  } catch {}
 
-    tokens.forEach(t => {
-      try { chess.move(t, { sloppy: true }); } catch {}
-    });
+  if (!ok) {
+    chess.reset();
+    forceSANReplay(pgn);
   }
 
   const history = chess.history();
   if (!history.length) {
-    movesDiv.textContent = "No moves found";
+    movesDiv.textContent = "No moves parsed (invalid PGN)";
     return;
   }
 
@@ -212,7 +180,7 @@ function importGame() {
     html += `
       <tr>
         <td class="num">${i / 2 + 1}.</td>
-        <td class="white">${history[i] || ""}</td>
+        <td>${history[i] || ""}</td>
         <td class="black">${history[i + 1] || ""}</td>
       </tr>`;
   }
