@@ -119,76 +119,7 @@ button {
   </div>
 </div>
 
-<script>
-const chess = new Chess();
-
-function sanitizePGN(pgn) {
-  return pgn
-    .replace(/\u00A0/g, ' ')
-    .replace(/\r/g, '')
-    .trim();
-}
-
-function forceSANReplay(pgn) {
-  const tokens = pgn
-    .replace(/\[.*?\]/gs, '')
-    .replace(/\{.*?\}/gs, '')
-    .replace(/\([^)]*\)/gs, '')
-    .replace(/\d+\.(\.\.)?/g, '')
-    .replace(/\b1-0\b|\b0-1\b|\b1\/2-1\/2\b|\*/g, '')
-    .split(/\s+/)
-    .map(t => t.replace(/[\?!+#]+$/, ''))
-    .filter(Boolean);
-
-  tokens.forEach(m => {
-    try { chess.move(m, { sloppy: true }); } catch {}
-  });
-}
-
-function importGame() {
-  const raw = document.getElementById("pgnInput").value;
-  const movesDiv = document.getElementById("moves");
-
-  movesDiv.innerHTML = "";
-  chess.reset();
-
-  if (!raw.trim()) {
-    movesDiv.textContent = "Paste PGN first";
-    return;
-  }
-
-  const pgn = sanitizePGN(raw);
-
-  let ok = false;
-  try {
-    ok = chess.load_pgn(pgn, { sloppy: true });
-  } catch {}
-
-  if (!ok) {
-    chess.reset();
-    forceSANReplay(pgn);
-  }
-
-  const history = chess.history();
-  if (!history.length) {
-    movesDiv.textContent = "No moves parsed (invalid PGN)";
-    return;
-  }
-
-  let html = "<table>";
-  for (let i = 0; i < history.length; i += 2) {
-    html += `
-      <tr>
-        <td class="num">${i / 2 + 1}.</td>
-        <td>${history[i] || ""}</td>
-        <td class="black">${history[i + 1] || ""}</td>
-      </tr>`;
-  }
-  html += "</table>";
-
-  movesDiv.innerHTML = html;
-}
-</script>
+<script src="script.js"></script>
 
 </body>
 </html>
