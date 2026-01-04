@@ -81,3 +81,7 @@ button {
   text-align: right;
   color: #c7f9ff;
 }
+
+.moves td.white {
+  color: #c7f9ff;
+}
