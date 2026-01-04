@@ -126,11 +126,11 @@ header p {
 .panel {
   background: #020617;
   border-radius: 12px;
-  padding: 20px;
+  padding: 14px;
   border: 1px solid #1e293b;
   display: flex;
   flex-direction: column;
-  height: 250px;
+  height: 50;
   min-width: 0; 
 }
 
