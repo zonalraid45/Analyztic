@@ -48,12 +48,12 @@ header p {
   display: flex;
   overflow: hidden;
   border: 1px solid #1e293b;
-  height: 100%;
+  height: 100%; /* Fills the height of the screen below header */
 }
 
 .board-layout {
   display: grid;
-  grid-template-columns: 2fr 0.8fr;
+  grid-template-columns: 1.8fr 1fr; /* Gives more priority to the board */
   gap: 15px;
   width: 100%;
   padding: 15px;
@@ -62,7 +62,7 @@ header p {
 .board-area {
   background: #020617;
   border-radius: 8px;
-  /* Removed aspect-ratio to let it fill the box width like the previous version */
+  /* Fixed: Removed aspect-ratio so it expands to fill the width again */
   width: 100%;
   height: 100%;
   display: flex;
