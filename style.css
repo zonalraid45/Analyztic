@@ -11,7 +11,7 @@ body {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  overflow: hidden; /* Prevents the whole page from scrolling */
+  overflow: hidden; 
 }
 
 header {
@@ -39,8 +39,8 @@ header p {
   flex-grow: 1;
   width: 100%;
   max-width: 100%;
-  align-items: stretch;
-  min-height: 0; /* Important for grid stability */
+  align-items: start; /* THIS STOPS THE BOX FROM GROWING TO THE BOTTOM */
+  min-height: 0; 
 }
 
 .board-box {
@@ -49,7 +49,7 @@ header p {
   display: flex;
   overflow: hidden;
   border: 1px solid #1e293b;
-  height: 100%;
+  height: 85vh; /* Keep the board section full size */
 }
 
 .board-layout {
@@ -83,7 +83,7 @@ header p {
   height: 100%;
   overflow: hidden;
   border: 1px solid #1e293b;
-  min-width: 0; /* Prevents text from pushing width */
+  min-width: 0;
 }
 
 .board-moves h3 {
@@ -107,15 +107,12 @@ header p {
 .moves table {
   width: 100%;
   border-collapse: collapse;
-  table-layout: fixed; /* Fixes the column widths */
+  table-layout: fixed;
 }
 
 .moves td {
   padding: 0.8vh 5px;
   font-size: 1.6vh;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .moves td.num {
@@ -123,14 +120,15 @@ header p {
   color: #64748b;
 }
 
+/* ADJUSTED PGN IMPORT BOX */
 .panel {
   background: #020617;
   border-radius: 12px;
-  padding: 14px;
+  padding: 20px;
   border: 1px solid #1e293b;
   display: flex;
   flex-direction: column;
-  height: 50px;
+  height: 320px; /* FIXED HEIGHT TO MATCH MOVE 8 AREA */
   min-width: 0; 
 }
 
@@ -152,14 +150,14 @@ textarea {
   font-family: monospace;
   font-size: 1.6vh;
   outline: none;
-  word-wrap: break-word; /* Forces long PGN text to wrap instead of widening */
+  word-wrap: break-word;
   overflow-y: auto;
 }
 
 button {
   width: 100%;
   margin-top: 15px;
-  padding: 1.8vh;
+  padding: 1.5vh;
   background: #2563eb;
   border: none;
   border-radius: 10px;
@@ -174,7 +172,6 @@ button:hover {
   background: #1d4ed8;
 }
 
-/* Scrollbar Styling */
 .moves::-webkit-scrollbar,
 textarea::-webkit-scrollbar {
   width: 6px;
