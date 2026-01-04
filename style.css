@@ -7,20 +7,39 @@ body {
   font-family: Poppins, sans-serif;
   background: linear-gradient(135deg, #0b1220, #0f1b2d);
   color: #e5e7eb;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 header {
   text-align: center;
-  padding: 24px;
+  padding: 1.5vh 0;
+  flex-shrink: 0;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 2.5vh;
+}
+
+header p {
+  margin: 0.5vh 0;
+  font-size: 1.4vh;
+  color: #94a3b8;
 }
 
 .container {
   display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 24px;
-  padding: 20px;
-  max-width: 1300px;
+  grid-template-columns: 2fr 0.8fr;
+  gap: 20px;
+  padding: 0 30px 30px 30px;
+  flex-grow: 1;
+  width: 100%;
+  max-width: 1600px;
   margin: 0 auto;
+  align-items: start;
 }
 
 .board-box {
@@ -29,29 +48,28 @@ header {
   display: flex;
   overflow: hidden;
   border: 1px solid #1e293b;
-  width: 100%;
+  height: 75vh;
 }
 
 .board-layout {
   display: grid;
-  grid-template-columns: 2.5fr 1fr;
-  gap: 16px;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 15px;
   width: 100%;
-  padding: 16px;
-  align-items: stretch;
+  padding: 15px;
 }
 
 .board-area {
   background: #020617;
   border-radius: 12px;
   aspect-ratio: 1 / 1;
-  width: 100%;
+  height: 100%;
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #64748b;
   border: 1px solid #1e293b;
-  font-size: 16px;
 }
 
 .board-moves {
@@ -60,7 +78,6 @@ header {
   display: flex;
   flex-direction: column;
   height: 100%;
-  min-height: 400px;
   overflow: hidden;
   border: 1px solid #1e293b;
 }
@@ -69,7 +86,7 @@ header {
   margin: 0;
   padding: 12px;
   text-align: center;
-  font-size: 14px;
+  font-size: 1.6vh;
   color: #94a3b8;
   border-bottom: 1px solid #1e293b;
 }
@@ -78,7 +95,7 @@ header {
   flex: 1;
   overflow-y: auto;
   font-family: monospace;
-  padding: 12px;
+  padding: 10px;
 }
 
 .moves table {
@@ -88,7 +105,7 @@ header {
 
 .moves td {
   padding: 6px 4px;
-  font-size: 14px;
+  font-size: 1.4vh;
 }
 
 .moves td.num {
@@ -99,11 +116,6 @@ header {
 .moves td.white,
 .moves td.black {
   color: #c7f9ff;
-  width: 45%;
-}
-
-.moves tr:nth-child(even) {
-  background: rgba(255, 255, 255, 0.02);
 }
 
 .panel {
@@ -111,17 +123,18 @@ header {
   border-radius: 14px;
   padding: 20px;
   border: 1px solid #1e293b;
+  height: fit-content;
 }
 
 .panel h3 {
   margin-top: 0;
-  margin-bottom: 15px;
-  font-size: 16px;
+  font-size: 1.8vh;
+  margin-bottom: 12px;
 }
 
 textarea {
   width: 100%;
-  height: 150px;
+  height: 15vh;
   background: #0f172a;
   border: 1px solid #1e293b;
   border-radius: 10px;
@@ -129,28 +142,20 @@ textarea {
   padding: 12px;
   resize: none;
   font-family: monospace;
-  outline: none;
-}
-
-textarea:focus {
-  border-color: #2563eb;
+  font-size: 1.4vh;
 }
 
 button {
   width: 100%;
   margin-top: 12px;
-  padding: 12px;
+  padding: 1.2vh;
   background: #2563eb;
   border: none;
   border-radius: 10px;
   color: white;
   font-weight: 600;
+  font-size: 1.6vh;
   cursor: pointer;
-  transition: background 0.2s;
-}
-
-button:hover {
-  background: #1d4ed8;
 }
 
 .moves::-webkit-scrollbar {
