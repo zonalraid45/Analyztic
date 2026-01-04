@@ -39,17 +39,18 @@ header p {
   flex-grow: 1;
   width: 100%;
   max-width: 100%;
-  align-items: start; /* THIS STOPS THE BOX FROM GROWING TO THE BOTTOM */
+  align-items: stretch; /* Stretches both sides to equal height */
   min-height: 0; 
 }
 
+/* LEFT SIDE */
 .board-box {
   background: #020617;
   border-radius: 12px;
   display: flex;
   overflow: hidden;
   border: 1px solid #1e293b;
-  height: 85vh; /* Keep the board section full size */
+  height: 100%; 
 }
 
 .board-layout {
@@ -83,7 +84,6 @@ header p {
   height: 100%;
   overflow: hidden;
   border: 1px solid #1e293b;
-  min-width: 0;
 }
 
 .board-moves h3 {
@@ -101,26 +101,16 @@ header p {
   overflow-y: auto;
   font-family: monospace;
   padding: 10px;
-  min-height: 0;
 }
 
-.moves table {
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed;
+/* RIGHT SIDE (CONTROLS) */
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 100%;
 }
 
-.moves td {
-  padding: 0.8vh 5px;
-  font-size: 1.6vh;
-}
-
-.moves td.num {
-  width: 45px;
-  color: #64748b;
-}
-
-/* ADJUSTED PGN IMPORT BOX */
 .panel {
   background: #020617;
   border-radius: 12px;
@@ -128,8 +118,8 @@ header p {
   border: 1px solid #1e293b;
   display: flex;
   flex-direction: column;
-  height: 320px; /* FIXED HEIGHT TO MATCH MOVE 8 AREA */
-  min-width: 0; 
+  flex: 1; /* Makes PGN + AI boxes split height equally */
+  min-height: 0; 
 }
 
 .panel h3 {
@@ -154,6 +144,18 @@ textarea {
   overflow-y: auto;
 }
 
+.ai-content {
+  flex-grow: 1;
+  background: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 10px;
+  padding: 15px;
+  color: #94a3b8;
+  font-size: 1.6vh;
+  overflow-y: auto;
+  line-height: 1.5;
+}
+
 button {
   width: 100%;
   margin-top: 15px;
@@ -172,13 +174,16 @@ button:hover {
   background: #1d4ed8;
 }
 
+/* Scrollbars */
 .moves::-webkit-scrollbar,
-textarea::-webkit-scrollbar {
+textarea::-webkit-scrollbar,
+.ai-content::-webkit-scrollbar {
   width: 6px;
 }
 
 .moves::-webkit-scrollbar-thumb,
-textarea::-webkit-scrollbar-thumb {
+textarea::-webkit-scrollbar-thumb,
+.ai-content::-webkit-scrollbar-thumb {
   background: #1e293b;
   border-radius: 10px;
 }
