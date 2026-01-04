@@ -130,7 +130,7 @@ header p {
   border: 1px solid #1e293b;
   display: flex;
   flex-direction: column;
-  height: 50%;
+  height: 250px;
   min-width: 0; 
 }
 
